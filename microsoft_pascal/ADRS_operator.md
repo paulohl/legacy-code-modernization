@@ -29,7 +29,6 @@ Use code
 ### 2. Custom Data Types (Records)      
 
 The language was frequently used for systems programming, utilizing structured records. 
-pascal      
 
 ```pascal
 
@@ -53,9 +52,6 @@ begin
     writeln('Date: ', Today.Month:1, '/', Today.Day:1, '/', Today.Year:4);
 end.
 ```
->
-> Use code with caution.
->
 
 
 ### 3. Microsoft-Specific Extensions      
@@ -92,25 +88,83 @@ Microsoft Pascal version 3.x introduced extensions like the ADRS operator for me
       and **LINK.EXE 1.x**.
     - A new module was rebuilt using **Microsoft C**, implicitly requiring
       **LINK.EXE 2.x or later**.
-
+    
     The issue was resolved by standardizing on **LINK.EXE 3.x**, restoring object-level
     compatibility and improving runtime performance due to linker fixes introduced
     since the 1.x series.
     
-   
+    
 ### Key Differences from Turbo Pascal      
 
-- Compilation: MS Pascal was a "command-line" compiler (PAS1.EXE, PAS2.EXE, and LINK.EXE), whereas Turbo Pascal was an all-in-one editor and compiler.
-- String Handling: In MS Pascal, strings were often declared as `string(size)`, whereas Borland used a more flexible `string[size]. 
-- Standards Compliance: MS Pascal strictly followed the ISO standard, making it harder to use for quick hobbies but better for large-scale, portable applications.
+- **Compilation**: MS Pascal was a "command-line" compiler (PAS1.EXE, PAS2.EXE, and LINK.EXE), whereas Turbo Pascal was an all-in-one editor and compiler.t-
+- **String Handling**: In MS Pascal, strings were often declared as `string(size)`, whereas Borland used a more flexible `string[size]`.
+- **Standards Compliance**: MS Pascal strictly followed the ISO standard, making it harder to use for quick hobbies but better for large-scale, portable applications.  n
+Documentation for these legacy systems can be found in archived manuals at sites like Bitsavers.org.     
 
-Documentation for these legacy systems can be found in archived manuals at sites like Bitsavers.org. 
+In Microsoft Pascal (specifically versions 3.x released in the mid-1980s), the `ADRS` and `ADS` operators were used for low-level memory addressing, particularly for working with the segmented memory architecture of the 8086 processor.    
 
-In Microsoft Pascal (specifically versions 3.x released in the mid-1980s), the `ADRS` and `ADS` operators were used for low-level memory addressing, particularly for working with the segmented memory architecture of the 8086 processor.     
+While standard Pascal uses the `^` symbol or `ADDR()` function to get a pointer, Microsoft Pascal used these specific operators to differentiate between near and far addresses.    
 
-While standard Pascal uses the ^ symbol or ADDR() function to get a pointer, Microsoft Pascal used these specific operators to differentiate between **near** and **far** addresses.      
 
-## `ADRS` Operator (Near Address)    
+### `ADRS` Operator (Near Address)      
 
-The `ADRS` operator returns the offset (near address) of a variable within the current data segment. The result is of type INTEGER or a relative pointer. 
+The `ADRS` operator returns the **offset** (near address) of a variable within the current data segment. The result is of type `INTEGER` or a relative pointer.
+
+
+```pascal
+
+program AdrsExample(output);
+
+var
+    MyVar: integer;
+    OffsetPtr: integer;
+
+begin
+    MyVar := 42;
+    
+    { Get the 16-bit offset of MyVar within the current segment }
+    OffsetPtr := ADRS MyVar;
+    
+    writeln('Value of MyVar: ', MyVar);
+    writeln('Memory offset of MyVar: ', OffsetPtr);
+end.
+```
+
+
+### `ADS` Operator (Far Address)     
+
+Often used alongside `ADRS`, the `ADS` operator returns a far address (Segment:Offset). This was essential for MS-DOS systems to access memory outside the default data segment. The result is a 32-bit value (a `ADSMEM` or far pointer type).     
+
+```pascal
+
+program AdsExample(output);
+
+var
+    GlobalVar: integer;
+    FarPtr: adsmem; { Microsoft Pascal keyword for a far pointer }
+
+begin
+    GlobalVar := 100;
+    
+    { Get the full Segment:Offset address of GlobalVar }
+    FarPtr := ADS GlobalVar;
+    
+    { Accessing the value using the far pointer }
+    writeln('Far Address of GlobalVar: ', FarPtr.s, ':', FarPtr.r);
+end.
+
+
+```
+
+
+## Key Technical Details for 1980s MS-Pascal:    
+
+- **Segmented Memory**: In the mid-1980s (MS-DOS 2.x/3.x), programs were limited by the 640KB RAM barrier and used 16-bit segments. `ADRS` allowed for faster local access, while `ADS` allowed for "Far" access to different memory regions. 
+- **Compatibility**: These operators were proprietary extensions. Code using ADRS would not compile on standard ISO Pascal or Borland's Turbo Pascal, which primarily used the `@` operator. 
+- **Variable Buffers**: These were commonly used when passing variables to assembly language subroutines or when performing direct video memory manipulation (e.g., writing directly to the CGA/EGA buffer at address B800:0000). 
+
+
+
+
+
 
