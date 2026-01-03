@@ -1,5 +1,4 @@
 
 
-![Microsoft C Compiler](Microsoft_C.jpg "Microsoft C Compiler")
-
+<img src="Microsoft_C.jpg" alt="Microsoft C Compiler" width="50%">
 
