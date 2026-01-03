@@ -1,4 +1,10 @@
 
+
+
+![Microsoft Pascal](Microsoft_Pascal.jpg "Microsoft Pascal")
+
+
+
 Microsoft Pascal (MS-Pascal), prevalent in the mid-1980s for MS-DOS and Xenix systems, adhered closely to standard Pascal syntax. Programs were structured with a program header, optional declaration sections, and a main executable block enclosed in begin and end.       
 
 Here is a sample "Hello, World!" program written in the style of mid-1980s MS-Pascal:      
